@@ -3,6 +3,7 @@ var express = require('express');
 var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
 var session = require('express-session');
+require('popper.js')
 
 // Import Misc Server Utils
 var path = require('path');
@@ -30,7 +31,7 @@ var app = express();
 
 // Init View Engine
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', erphbs({
+app.engine('handlebars', exphbs({
   defaultLayout: 'layout'
 }));
 app.set('view engine', 'handlebars');
@@ -90,3 +91,10 @@ app.set('port', (process.env.PORT || 3000));
 app.listen(app.get('port'), function () {
   console.log('Server started on port ' + app.get('port'));
 });
+
+// prepare server
+// app.use('/api', api); // redirect API calls
+app.use('/', express.static(__dirname + '/www')); // redirect root
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
