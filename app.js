@@ -18,9 +18,10 @@ var LocalStrategy = require('passport-local').Strategy;
 // Import MongoDB
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/loginapp');
+mongoose.connect('mongodb://localhost/loginapp', {
+  useMongoClient: true
+});
 var db = mongoose.connection;
-
 
 // Set API Routes
 var routes = require('./routes/index');
@@ -55,7 +56,7 @@ app.use(session({
 
 // Express Validator
 app.use(expressValidator({
-  errorFormatter: function (param, msg, value) {
+  errorFormatter: function(param, msg, value) {
     var namespace = param.split('.'),
       root = namespace.shift(),
       formParam = root;
@@ -75,7 +76,7 @@ app.use(expressValidator({
 app.use(flash());
 
 // Global Flash Vars
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
@@ -88,13 +89,6 @@ app.use('/users', users);
 
 // Set port and start Express
 app.set('port', (process.env.PORT || 3000));
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function() {
   console.log('Server started on port ' + app.get('port'));
 });
-
-// prepare server
-// app.use('/api', api); // redirect API calls
-app.use('/', express.static(__dirname + '/www')); // redirect root
-app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
-app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
-app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
