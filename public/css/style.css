@@ -84,8 +84,11 @@ body {
 .header {
   margin-bottom: 40px;
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
+}
+.clearfix::after {
+  display: none !important;
 }
 footer {
   margin-top: 40px;
